@@ -103,14 +103,5 @@ Scenario definition is encapsulated in the `Scenario` structure returned by `bui
 - Deterministic ODE integration via RK4 with fixed step sizes set inside the plotting routines.
 - For parameter sweeps (e.g., panic ratios and evacuation times), the script loops across grids and capacities. Adjust grid sizes for speed/accuracy trade-offs.
 
-## Troubleshooting
 
-- If no windows appear, ensure you run in an environment that supports GUI backends for Matplotlib or switch to a non-interactive backend and save figures instead.
-- If you see import errors, check that `numpy` and `matplotlib` are installed in the active Python environment.
-- Very large capacities or populations can cause stiff-like behavior; reduce the time step if necessary (see calls to `rk4(...)`).
-
-
-## Acknowledgments
-
-- Concept inspired by behavioral compartment models and evacuation dynamics literature. The summary plots echo patterns discussed in works such as Lanza et al. (for evacuation vs. capacity curves), adapted to this custom implementation.
 
