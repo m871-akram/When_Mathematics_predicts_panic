@@ -12,9 +12,6 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 
-# ---------------------------------------------------------------------------
-# Utilitaires
-# ---------------------------------------------------------------------------
 
 def smooth_gate(t: float, t0: float, t1: float) -> float:
     """
@@ -35,9 +32,7 @@ def Delta(x: float) -> float:
     return (x * x) / (1.0 + x * x)
 
 
-# ---------------------------------------------------------------------------
 # Paramètres du modèle
-# ---------------------------------------------------------------------------
 
 @dataclass
 class TemporalParams:
@@ -124,9 +119,7 @@ class Scenario:
     dt_min: float = 0.1
 
 
-# ---------------------------------------------------------------------------
 # Imitation / contagion
-# ---------------------------------------------------------------------------
 
 def Xi(r: float, i: float, n0: float, alpha1: float, alpha2: float, eps: float) -> float:
     # Ξ(r,i) = -α1 Δ( i/(r+eps) ) * 1/n0 + α2 Δ( r/(i+eps) ) * 1/n0
@@ -143,9 +136,7 @@ def Upsilon(i: float, p: float, n0: float, gamma1: float, gamma2: float, eps: fl
     return -gamma1 * Delta(p / (i + eps)) / n0 + gamma2 * Delta(i / (p + eps)) / n0
 
 
-# ---------------------------------------------------------------------------
 # Flux spatiaux
-# ---------------------------------------------------------------------------
 
 def rho(speed: float, L_kj: float, S_k: float) -> float:
     """ρ_kj = (V * L_kj) / S_k"""
@@ -193,9 +184,7 @@ def compute_flux_terms(pop: np.ndarray,
 
     return {'r': r_flux, 'i': i_flux, 'p': p_flux}
 
-# ---------------------------------------------------------------------------
 # Système d'EDO (RHS)
-# ---------------------------------------------------------------------------
 
 def rhs(t_min: float,
         y: np.ndarray,
@@ -280,9 +269,7 @@ def rhs(t_min: float,
     return dY.reshape(-1)
 
 
-# ---------------------------------------------------------------------------
 # Intégrateur RK4
-# ---------------------------------------------------------------------------
 
 def rk4(f: Callable[[float, np.ndarray], np.ndarray],
         t0: float,
@@ -315,9 +302,7 @@ def rk4(f: Callable[[float, np.ndarray], np.ndarray],
     return T, Y
 
 
-# ---------------------------------------------------------------------------
-# Graphiques des scénarios (4 panneaux)
-# ---------------------------------------------------------------------------
+# Graphiques des scénarios
 
 def plot_results(times: np.ndarray, states: np.ndarray, scenario_name: str):
 
@@ -367,9 +352,7 @@ def plot_results(times: np.ndarray, states: np.ndarray, scenario_name: str):
     plt.show()
 
 
-# ---------------------------------------------------------------------------
 # Graphiques des fonctions du temps Ψ(t) et Φ(t)
-# ---------------------------------------------------------------------------
 
 def plot_time_functions(params: TemporalParams):
     t = np.linspace(0, max(params.t3 * 1.1, 100.0), 600)
@@ -386,9 +369,7 @@ def plot_time_functions(params: TemporalParams):
     plt.show()
 
 
-# ---------------------------------------------------------------------------
 # Construction des scénarios
-# ---------------------------------------------------------------------------
 
 def build_scenarios(space: SpaceParams) -> List[Scenario]:
     """
@@ -426,9 +407,7 @@ def build_scenarios(space: SpaceParams) -> List[Scenario]:
     ]
 
 
-# ---------------------------------------------------------------------------
-# Exécution d’un scénario (intégration + affichage)
-# ---------------------------------------------------------------------------
+# Exécution d’un scénario
 
 def run_scenario(scn: Scenario, base_params: TemporalParams, base_space: SpaceParams):
     # Clone des paramètres temporels
@@ -460,9 +439,6 @@ def run_scenario(scn: Scenario, base_params: TemporalParams, base_space: SpacePa
     plot_results(times, states, scn.name)
 
 
-# ---------------------------------------------------------------------------
-# Graphiques de conclusion multi-courbes (par scénario)
-# ---------------------------------------------------------------------------
 
 def plot_evacuation_curve_multi(params: TemporalParams, space: SpaceParams):
 
@@ -480,7 +456,7 @@ def plot_evacuation_curve_multi(params: TemporalParams, space: SpaceParams):
             # Clone de l'espace
             sp = SpaceParams(**asdict(space))
 
-            # ⚙️ On traduit la capacité en facteur sur L12 (la largeur de l’escalier)
+            #  On traduit la capacité en facteur sur L12 (la largeur de l’escalier)
             baseN2 = sp.S2 * sp.capacity_density
             sp.L12 = space.L12 * (stair_cap / baseN2)  # effet de saturation
             sp.L23 = space.L23  # inchangé
@@ -566,10 +542,6 @@ def plot_panic_ratio_curve_multi(params: TemporalParams, space: SpaceParams):
     plt.grid(True)
     plt.show()
 
-
-# ---------------------------------------------------------------------------
-# Programme principal
-# ---------------------------------------------------------------------------
 
 def main():
     # Paramètres de base
