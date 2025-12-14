@@ -5,7 +5,7 @@ This repository contains a full simulation of human reaction during a disaster a
 The code is self-contained (no SciPy) and uses a custom RK4 integrator with NumPy and Matplotlib only.
 
 - Main script: `simulation_panic.py`
-- Language of code and comments: French (with mathematical notation and some English inline)
+
 
 
 ## Overview
@@ -38,38 +38,8 @@ Example zones used in the script:
 - [2] Musée Berbère (stair/bottleneck)
 - [3] Rue Yves St. Laurent
 
-## Requirements
 
-- Python 3.9+
-- NumPy
-- Matplotlib
 
-Install dependencies:
-
-```bash
-pip install -U numpy matplotlib
-```
-
-## Running the simulation
-
-Execute the main script:
-
-```bash
-python simulation_panic.py
-```
-
-What you will see:
-- For each scenario, a figure with 4 panels showing the evolution of n, r, i, p, s (total and per zone)
-- A figure with Ψ(t) and Φ(t)
-- Two summary figures:
-  - Evacuation time vs. capacity (or an equivalent bottleneck sweep)
-  - Panic ratio at 40 minutes in zone 3 vs. initial n3(0)
-
-The script uses the `main()` function at the bottom of `simulation_panic.py` which:
-1. Creates default temporal parameters (`TemporalParams`)
-2. Creates default spatial parameters (`SpaceParams`)
-3. Runs multiple built-in scenarios via `build_scenarios()` and `run_scenario()`
-4. Produces summary plots with `plot_evacuation_curve_multi()` and `plot_panic_ratio_curve_multi()`
 
 ## Configuration
 
@@ -93,15 +63,7 @@ Key dataclasses you can adjust in the script:
 
 Scenario definition is encapsulated in the `Scenario` structure returned by `build_scenarios(space)` and used in `run_scenario()`.
 
-## Outputs
 
-- Interactive Matplotlib figures (no files are saved by default). You can add `plt.savefig(...)` calls to persist figures.
-- Time arrays and state arrays are kept in memory inside each plotting function; adapt as needed if you wish to export CSV/NPY.
-
-## Reproducibility and Performance
-
-- Deterministic ODE integration via RK4 with fixed step sizes set inside the plotting routines.
-- For parameter sweeps (e.g., panic ratios and evacuation times), the script loops across grids and capacities. Adjust grid sizes for speed/accuracy trade-offs.
 
 
 
