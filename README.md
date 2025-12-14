@@ -6,10 +6,6 @@ The code is self-contained (no SciPy) and uses a custom RK4 integrator with NumP
 
 - Main script: `simulation_panic.py`
 
-
-
-## Overview
-
 Behavioral compartments (per zone):
 - n: normal
 - r: reflexive
@@ -37,8 +33,6 @@ Example zones used in the script:
 - [1] Jardin Majorelle
 - [2] Musée Berbère (stair/bottleneck)
 - [3] Rue Yves St. Laurent
-
-
 
 
 ## Configuration
