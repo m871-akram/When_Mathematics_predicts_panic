@@ -2,15 +2,11 @@
 # -*- coding: utf-8 -*-
 
 
-from __future__ import annotations
-
 import math
+import matplotlib.pyplot as plt
+import numpy as np
 from dataclasses import dataclass, asdict
 from typing import Callable, Dict, List, Tuple
-
-import numpy as np
-import matplotlib.pyplot as plt
-
 
 
 def smooth_gate(t: float, t0: float, t1: float) -> float:
@@ -67,9 +63,9 @@ class TemporalParams:
     pi_p: float = 0.001
 
     # Behavioral regression coefficients (back transitions)
-    k_ir: float = 0.02   # intelligent -> reflexive (loss of control)
-    k_pr: float = 0.05   # panic -> reflexive
-    k_pi: float = 0.01   # panic -> intelligent (calming)
+    k_ir: float = 0.02  # intelligent -> reflexive (loss of control)
+    k_pr: float = 0.05  # panic -> reflexive
+    k_pi: float = 0.01  # panic -> intelligent (calming)
 
 
 @dataclass
@@ -88,7 +84,6 @@ class SpaceParams:
     # Densité capacité (pers/m²)
     capacity_density: float = 4.0
     stair_capacity_factor: float = 1.0
-
 
     def Nmax(self) -> np.ndarray:
         N = np.array([self.S1, self.S2, self.S3]) * self.capacity_density
@@ -167,13 +162,13 @@ def compute_flux_terms(pop: np.ndarray,
                 continue
 
             # --- inflow from k → j, limited by congestion in destination j
-            congestion = max(0.0, 1.0 - (N[j] / (Nmax[j] + 1e-9))**3)
+            congestion = max(0.0, 1.0 - (N[j] / (Nmax[j] + 1e-9)) ** 3)
             inflow_r += congestion * rho(Vr, L[k, j], S[k]) * pop[k, 1]
             inflow_i += congestion * rho(Vi, L[k, j], S[k]) * pop[k, 2]
             inflow_p += congestion * rho(Vp, L[k, j], S[k]) * pop[k, 3]
 
             # --- outflow from j → k, reduced if destination is congested
-            congestion_dest = max(0.0, 1.0 - (N[k] / (Nmax[k] + 1e-9))**3)
+            congestion_dest = max(0.0, 1.0 - (N[k] / (Nmax[k] + 1e-9)) ** 3)
             out_r += congestion_dest * rho(Vr, L[j, k], S[j]) * pop[j, 1]
             out_i += congestion_dest * rho(Vi, L[j, k], S[j]) * pop[j, 2]
             out_p += congestion_dest * rho(Vp, L[j, k], S[j]) * pop[j, 3]
@@ -183,6 +178,7 @@ def compute_flux_terms(pop: np.ndarray,
         p_flux[j] = inflow_p - out_p
 
     return {'r': r_flux, 'i': i_flux, 'p': p_flux}
+
 
 # Système d'EDO (RHS)
 
@@ -291,7 +287,7 @@ def rk4(f: Callable[[float, np.ndarray], np.ndarray],
         k1 = f(t, y)
         k2 = f(t + 0.5 * dt, y + 0.5 * dt * k1)
         k3 = f(t + 0.5 * dt, y + 0.5 * dt * k2)
-        k4 = f(t + dt,       y + dt * k3)
+        k4 = f(t + dt, y + dt * k3)
         y = y + (dt / 6.0) * (k1 + 2 * k2 + 2 * k3 + k4)
         # Garde-fou de non-négativité
         y = np.maximum(y, 0.0)
@@ -305,7 +301,6 @@ def rk4(f: Callable[[float, np.ndarray], np.ndarray],
 # Graphiques des scénarios
 
 def plot_results(times: np.ndarray, states: np.ndarray, scenario_name: str):
-
     Y = states.reshape(len(times), 3, 6)
     labels = ['n(t)', 'r(t)', 'i(t)', 'p(t)', 's(t)', 'd(t)']
 
@@ -401,9 +396,11 @@ def build_scenarios(space: SpaceParams) -> List[Scenario]:
     # r, i, p, s, d = 0 au départ
 
     return [
-        Scenario(name="Scénario 1 (normale légère)", init_zone_counts=init1, speed_multiplier=1.0, t_max_min=120.0, dt_min=0.1),
-        Scenario(name="Scénario 2 (normale moyenne)", init_zone_counts=init2, speed_multiplier=1.0, t_max_min=120.0, dt_min=0.1),
-        Scenario(name="Scénario 3 (rapide)",          init_zone_counts=init3, speed_multiplier=1.3, t_max_min=120.0, dt_min=0.1),
+        Scenario(name="Scénario 1 (normale légère)", init_zone_counts=init1, speed_multiplier=1.0, t_max_min=120.0,
+                 dt_min=0.1),
+        Scenario(name="Scénario 2 (normale moyenne)", init_zone_counts=init2, speed_multiplier=1.0, t_max_min=120.0,
+                 dt_min=0.1),
+        Scenario(name="Scénario 3 (rapide)", init_zone_counts=init3, speed_multiplier=1.3, t_max_min=120.0, dt_min=0.1),
     ]
 
 
@@ -439,9 +436,7 @@ def run_scenario(scn: Scenario, base_params: TemporalParams, base_space: SpacePa
     plot_results(times, states, scn.name)
 
 
-
 def plot_evacuation_curve_multi(params: TemporalParams, space: SpaceParams):
-
     scenarios = build_scenarios(space)
 
     # On fait varier le "goulot d'étranglement" — l'ouverture effective de l'escalier
@@ -500,6 +495,7 @@ def plot_evacuation_curve_multi(params: TemporalParams, space: SpaceParams):
     plt.legend()
     plt.tight_layout()
     plt.show()
+
 
 def plot_panic_ratio_curve_multi(params: TemporalParams, space: SpaceParams):
     """
