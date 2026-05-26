@@ -1,8 +1,8 @@
 # When Mathematics Predicts Panic — Disaster Reaction Simulation 
 
-This repository contains a full simulation of human reaction during a disaster across multiple zones, built around an extended SIR-like behavioral model and simple spatial flows. It produces illustrative figures for several scenarios and summary plots that relate evacuation time and panic ratio to initial conditions and bottleneck capacities.
+This repository contains the simulation of human reaction during a disaster across multiple zones, built around an extended SIR-like behavioral model and simple spatial flows. It produces illustrative figures for several scenarios and summary plots that relate evacuation time and panic ratio to initial conditions and bottleneck capacities.
 
-The code is self-contained (no SciPy) and uses a custom RK4 integrator with NumPy and Matplotlib only.
+The code is uses a custom RK4 integrator with NumPy and Matplotlib only
 
 - Main script: `simulation_panic.py`
 
@@ -54,10 +54,3 @@ Key dataclasses you can adjust in the script:
   - Vr, Vi, Vp: walking speeds (m/s) for r, i, p groups
   - capacity_density: persons per m²
   - stair_capacity_factor: additional cap on zone 2 (bottleneck)
-
-Scenario definition is encapsulated in the `Scenario` structure returned by `build_scenarios(space)` and used in `run_scenario()`.
-
-
-
-
-
