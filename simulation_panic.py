@@ -209,12 +209,9 @@ def rhs(t_min: float,
 
     for j in range(3):
         # --- Imitation / contagion (bidirectional) ---
-        Xi_val = (params.alpha1 * Delta(i[j] / (r[j] + params.eps)) +
-                  params.alpha2 * Delta(r[j] / (i[j] + params.eps))) / n0_total
-        Th_val = (params.beta1 * Delta(p[j] / (r[j] + params.eps)) +
-                  params.beta2 * Delta(r[j] / (p[j] + params.eps))) / n0_total
-        Up_val = (params.gamma1 * Delta(p[j] / (i[j] + params.eps)) +
-                  params.gamma2 * Delta(i[j] / (p[j] + params.eps))) / n0_total
+        Xi_val = Xi(r[j], i[j], n0_total, params.alpha1, params.alpha2, params.eps)
+        Th_val = Theta(r[j], p[j], n0_total, params.beta1, params.beta2, params.eps)
+        Up_val = Upsilon(i[j], p[j], n0_total, params.gamma1, params.gamma2, params.eps)
 
         # --- Mortality rates ---
         death_r = params.pi_r * r[j]
@@ -236,14 +233,14 @@ def rhs(t_min: float,
         di = (params.a1 * r[j]
               + params.b1 * p[j]
               + params.k_pi * p[j]
-              - (params.c1 + params.b2 + params.Mi + params.pi_i) * i[j]
+              - (params.c1 + params.b2 + params.Mi + params.pi_i + params.k_ir) * i[j]
               - Phi * i[j]
               + Up_val * p[j] * i[j]
               - Xi_val * r[j] * i[j])
 
         dp = (params.b2 * i[j]
               + params.a2 * r[j]
-              - (params.b1 + params.c2 + params.Mp + params.pi_p) * p[j]
+              - (params.b1 + params.c2 + params.Mp + params.pi_p + params.k_pr + params.k_pi) * p[j]
               - Up_val * i[j] * p[j]
               - Th_val * r[j] * p[j])
 
