@@ -537,22 +537,8 @@ def plot_panic_ratio_curve_multi(params: TemporalParams, space: SpaceParams):
 
 
 def main():
-    # Paramètres de base
-    params = TemporalParams(
-        a1=0.2, a2=0.25, b1=0.1, b2=0.15,
-        c1=0.005, c2=0.005,
-        Mr=0.001, Mi=0.001, Mp=0.001,
-        t0=4.0, t1=10.0, t2=60.0, t3=100.0,
-        alpha1=1.0, alpha2=1.0, beta1=1.0, beta2=1.0, gamma1=1.0, gamma2=1.0,
-        eps=1e-6
-    )
-
-    space = SpaceParams(
-        S1=8000.0, S2=2000.0, S3=3500.0,
-        L12=50.0, L23=30.0,
-        Vr=5.0, Vi=4.0, Vp=3.0,
-        capacity_density=4.0
-    )
+    params = TemporalParams()
+    space = SpaceParams()
 
     # 1) Simulations de scénarios (graphiques 4 panneaux)
     for scn in build_scenarios(space):
