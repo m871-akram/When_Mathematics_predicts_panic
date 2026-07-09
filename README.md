@@ -39,8 +39,6 @@ Example zones used in the script:
 - **[2] Musée Berbère** (stair/bottleneck)
 - **[3] Rue Yves St. Laurent**
 
----
-
 ## Configuration
 
 **Key dataclasses you can adjust in the script `simulation_panic.py` :**
