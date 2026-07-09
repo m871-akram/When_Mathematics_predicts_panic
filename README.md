@@ -1,8 +1,6 @@
 # When Mathematics Predicts Panic — Disaster Reaction Simulation 
 
-This repository contains the simulation of human reaction during a disaster across multiple zones, built around an extended SIR-like behavioral model and simple spatial flows. It produces illustrative plots and data series for evacuation outcomes, making it easy to tune behavioral switches and spatial constraints.
-
-- Main script: `simulation_panic.py`
+A simulation of human reaction during a disaster across multiple zones, built around an extended SIR-like behavioral model and simple spatial flows. It produces illustrative plots and data series for evacuation outcomes, making it easy to tune behavioral switches and spatial constraints.
 
 ## Behavioral Compartments (per zone)
 
@@ -13,7 +11,7 @@ This repository contains the simulation of human reaction during a disaster acro
 - $s$ : rescued (safe)
 - $d$ : deceased (if mortality is enabled)
 
-## Dynamics include
+## Dynamics 
 
 - Imitation/contagion terms between behaviors using smoothed nonlinearities:
   - $\Xi(r, i)$
@@ -45,7 +43,7 @@ Example zones used in the script:
 
 ## Configuration
 
-**Key dataclasses you can adjust in the script:**
+**Key dataclasses you can adjust in the script `simulation_panic.py` :**
 
 - **TemporalParams**
   - $a_1$, $a_2$, $b_1$, $b_2$, $c_1$, $c_2$: internal transition rates
@@ -62,5 +60,3 @@ Example zones used in the script:
   - $V_r$, $V_i$, $V_p$: walking speeds (m/s) for $r$, $i$, $p$ groups
   - `capacity_density`: persons per m²
   - `stair_capacity_factor`: additional cap on zone 2 (bottleneck)
-
-Scenario definition is encapsulated in the `Scenario` structure returned by `build_scenarios(space)` and used in `run_scenario()`.
